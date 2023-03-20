@@ -12,24 +12,3 @@ fn main() {
 
     println!("f({x}) = {}", polyn.eval(x));
 }
-
-enum Form {
-    Sin(Symbol),
-    Cos(Symbol),
-    Log(Symbol),
-    Poly(PolyExpr),
-    Exp(Symbol),
-    Root(Symbol),
-    Rational(Symbol),
-}
-
-
-// + * f(g(x))
-
-enum Join {
-    Addition()
-}
-
-impl Form {
-
-}

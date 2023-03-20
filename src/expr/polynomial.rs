@@ -45,13 +45,7 @@ impl Symbol {
 macro_rules! poly {    
     ( $( $x:literal ),* ) => {
         {
-            let mut temp_vec = Vec::new();
-
-            $(
-                temp_vec.push($x);
-            )*
-
-            PolyExpr::new(temp_vec)
+            PolyExpr::new(vec![$( $x, )* ])
         }
     };
 }

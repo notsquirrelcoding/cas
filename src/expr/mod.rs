@@ -2,6 +2,7 @@ use self::polynomial::PolyExpr;
 
 pub mod polynomial;
 pub mod base_func;
+pub mod join;
 
 enum Expression {
     Polynomial(Box<PolyExpr>),
