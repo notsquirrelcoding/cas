@@ -1,12 +1,12 @@
 use self::polynomial::PolyExpr;
 
-pub mod polynomial;
 pub mod base_func;
 pub mod join;
+pub mod polynomial;
 
 enum Expression {
     Polynomial(Box<PolyExpr>),
-    Transcedental
+    Transcedental,
 }
 
 pub trait Function {
@@ -15,7 +15,7 @@ pub trait Function {
 
 pub struct Symbol {
     ident: char,
-    val: Option<f64>
+    val: Option<f64>,
 }
 
 impl Symbol {
@@ -23,4 +23,3 @@ impl Symbol {
         Symbol { ident, val: None }
     }
 }
-

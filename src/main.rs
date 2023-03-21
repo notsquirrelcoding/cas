@@ -1,14 +1,15 @@
 mod expr;
-use expr::{polynomial::{PolyExpr, poly}, Symbol};
+use expr::{
+    join::{Join, JoinType},
+};
 
-use crate::expr::Function;
+use crate::expr::base_func::BaseFunc;
 
 fn main() {
-    //                          x^3   x^2  x^1  x^0
-    let polyn = poly!(1.0, 24.0, 0.0, 4.0);
+    let f = Join::new(BaseFunc::Ln);
+    let g = Join::new(BaseFunc::Power(-1.0));
+    let h = g.join(f, JoinType::Composition).unwrap();
 
+    println!("{}", h.eval(0.5));
 
-    let x = 4.0;
-
-    println!("f({x}) = {}", polyn.eval(x));
 }

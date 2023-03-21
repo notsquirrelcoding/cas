@@ -2,8 +2,10 @@ use crate::expr::Function;
 
 use super::polynomial::PolyExpr;
 
+#[derive(Debug, Clone)]
 pub enum BaseFunc {
     Ln,
+    Constant(f64),
     Log(f64),
     Poly(PolyExpr),
     Rational(PolyExpr, PolyExpr),
@@ -32,6 +34,7 @@ impl BaseFunc {
             BaseFunc::Arctan => x.atan(),
             BaseFunc::Exp(base) => base.powf(x),
             BaseFunc::Power(power) => x.powf(*power),
+            BaseFunc::Constant(constant) => *constant,
         }
     }
 }
@@ -61,7 +64,10 @@ mod tests {
             379585.7103670243
         );
         assert_eq!(BaseFunc::Power(0.5).eval(4.0), 2.0);
-        assert_eq!(BaseFunc::Rational(poly!(3.0, 1.0, 0.0), poly!(6.4, 2.4, 2.7)).eval(3.0), 4.0 / 9.0);
+        assert_eq!(
+            BaseFunc::Rational(poly!(3.0, 1.0, 0.0), poly!(6.4, 2.4, 2.7)).eval(3.0),
+            4.0 / 9.0
+        );
         assert_eq!(BaseFunc::Sin.eval(PI), 1.2246063538223773e-16);
         assert_eq!(BaseFunc::Tan.eval(PI / 4.0), 0.9999999999999999);
     }

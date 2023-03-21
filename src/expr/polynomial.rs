@@ -1,8 +1,9 @@
 use super::Function;
 
+#[derive(Debug, Clone)]
 pub struct PolyExpr {
     degree: usize,
-    coefficients: Vec<f64>
+    coefficients: Vec<f64>,
 }
 
 impl PolyExpr {
@@ -15,7 +16,6 @@ impl PolyExpr {
         }
     }
 }
-
 
 impl Function for PolyExpr {
     fn eval(&self, x: f64) -> f64 {
@@ -32,8 +32,9 @@ impl Function for PolyExpr {
 
         result
     }
-}struct Symbol {
-    ident: char
+}
+struct Symbol {
+    ident: char,
 }
 
 impl Symbol {
@@ -42,7 +43,7 @@ impl Symbol {
     }
 }
 
-macro_rules! poly {    
+macro_rules! poly {
     ( $( $x:literal ),* ) => {
         {
             PolyExpr::new(vec![$( $x, )* ])
