@@ -1,6 +1,8 @@
 use super::base_func::BaseFunc;
 
 #[derive(Debug, Clone)]
+/// A struct that represents the sum product, and composition of two functions. 
+/// It is a recursive structure so any elementary function can be made using this.
 pub struct Join {
     lhs: Option<Box<Join>>,
     rhs: Option<Box<Join>>,
@@ -67,13 +69,12 @@ pub enum JoinFuncError {
     NonBaseJoin,
 }
 
-
 #[cfg(test)]
 mod tests {
-    use std::f64::consts::{PI, E};
+    use std::f64::consts::{E, PI};
 
-    use crate::expr::base_func::BaseFunc;
     use super::{Join, JoinType};
+    use crate::expr::base_func::BaseFunc;
 
     #[test]
     fn test_sum() {
@@ -83,7 +84,6 @@ mod tests {
         let h = f.join(g, JoinType::Sum).unwrap();
 
         assert_eq!(h.eval(0.5), -0.21372164195574228);
-
     }
 
     #[test]
@@ -94,7 +94,6 @@ mod tests {
         let h = f.join(g, JoinType::Product).unwrap();
 
         assert_eq!(h.eval(0.5), -0.3323124603719365);
-
     }
 
     #[test]
@@ -145,5 +144,4 @@ mod tests {
         let g = Join::new(BaseFunc::Ln);
         assert!(f.join(g, JoinType::Base).is_err());
     }
-
 }
