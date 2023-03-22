@@ -1,3 +1,4 @@
+use core::prelude;
 use std::fmt;
 
 use crate::expr::join::JoinType;
@@ -76,12 +77,12 @@ impl fmt::Display for PolyExpr {
 
         let mut string = String::new();
 
-        for i in (0..self.degree).rev() {
-            if i == 0 {
+        for i in (0..(self.degree)).rev() {
+            if self.coefficients[self.degree - i] == 0.0 {
                 continue;
             }
 
-            let sign = match self.coefficients[self.degree - i].signum() {
+            let sign = match self.coefficients[self.degree - i - 1].signum() {
                 1.0 => {
                     String::from("+")
                 },
@@ -91,7 +92,7 @@ impl fmt::Display for PolyExpr {
                 _ => unreachable!()
             };
 
-            string.push_str(&format!("{}x^{} {}", self.coefficients[self.degree - i], i, sign))
+            string.push_str(&format!("{}x^{} {}", self.coefficients[self.degree - i].abs(), i, sign))
             
         }
 

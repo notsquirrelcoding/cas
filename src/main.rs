@@ -6,7 +6,7 @@ use expr::{
 use crate::expr::base_func::BaseFunc;
 
 fn main() {
-    let polyn = poly!(5.0, 4.0, 3.14, 34.0);
+    let polyn = poly!(5.0, -4.0, 3.14, -34.0, 0.0, 0.0, 5.0);
     println!("{}", polyn);
 }
 
