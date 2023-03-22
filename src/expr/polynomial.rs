@@ -1,4 +1,6 @@
-use super::Function;
+use crate::expr::join::JoinType;
+
+use super::{base_func::BaseFunc, join::{Join, JoinFuncError}, Function};
 
 #[derive(Debug, Clone)]
 pub struct PolyExpr {
@@ -14,6 +16,31 @@ impl PolyExpr {
             degree,
             coefficients,
         }
+    }
+
+    fn destructure(&self) -> Result<Vec<Join>, JoinFuncError> {
+        let mut vec = Vec::with_capacity(self.degree);
+
+        for deg in (0..self.degree).rev() {
+            let constant = Join::new(BaseFunc::Constant(
+                self.coefficients[self.coefficients.len() - deg],
+            ));
+
+            let power = Join::new(BaseFunc::Power(deg as f64));
+
+            vec.push(constant.join(power, JoinType::Product));
+        }
+        
+        vec
+    }
+
+    fn combine_terms(&mut self) {
+
+        // let
+
+        // loop and check for like terms. if so add to queue
+
+        // combine like terms and remove old ones
     }
 }
 
@@ -44,6 +71,7 @@ impl Symbol {
 }
 
 macro_rules! poly {
+
     ( $( $x:literal ),* ) => {
         {
             PolyExpr::new(vec![$( $x, )* ])
