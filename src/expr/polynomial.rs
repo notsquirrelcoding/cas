@@ -1,3 +1,5 @@
+use std::fmt;
+
 use crate::expr::join::JoinType;
 
 use super::{base_func::BaseFunc, join::{Join, JoinFuncError}, Function};
@@ -7,6 +9,8 @@ pub struct PolyExpr {
     degree: usize,
     coefficients: Vec<f64>,
 }
+
+
 
 impl PolyExpr {
     pub fn new(coefficients: Vec<f64>) -> Self {
@@ -28,10 +32,12 @@ impl PolyExpr {
 
             let power = Join::new(BaseFunc::Power(deg as f64));
 
-            vec.push(constant.join(power, JoinType::Product));
+            let monomial = constant.join(power, JoinType::Product)?;
+
+            vec.push(monomial);
         }
-        
-        vec
+
+        Ok(vec)
     }
 
     fn combine_terms(&mut self) {
@@ -62,6 +68,36 @@ impl Function for PolyExpr {
 }
 struct Symbol {
     ident: char,
+}
+
+impl fmt::Display for PolyExpr {
+    // This trait requires `fmt` with this exact signature.
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+
+        let mut string = String::new();
+
+        for i in (0..self.degree).rev() {
+            if i == 0 {
+                continue;
+            }
+
+            let sign = match self.coefficients[self.degree - i].signum() {
+                1.0 => {
+                    String::from("+")
+                },
+                -1.0 => {
+                    String::from("-")
+                },
+                _ => unreachable!()
+            };
+
+            string.push_str(&format!("{}x^{} {}", self.coefficients[self.degree - i], i, sign))
+            
+        }
+
+
+        write!(f, "{}", string)
+    }
 }
 
 impl Symbol {

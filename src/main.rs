@@ -6,16 +6,8 @@ use expr::{
 use crate::expr::base_func::BaseFunc;
 
 fn main() {
-    let lhs = Join::new(BaseFunc::Poly(poly!(10.0, 0.0)));
-    let rhs = Join::new(BaseFunc::Constant(5.0));
-
-    let x_symbol = Symbol::new('x');
-
-    let mut cas = CAS::new(lhs, rhs, x_symbol);
-
-    cas.solve();
-
-
+    let polyn = poly!(5.0, 4.0, 3.14, 34.0);
+    println!("{}", polyn);
 }
 
 enum Form {
