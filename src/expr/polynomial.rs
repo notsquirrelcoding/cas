@@ -60,7 +60,7 @@ impl PolyExpr {
         }
 
         // Add the remaining terms of the larger polynomial
-        new_coefficients.append(&mut other.coefficients[..(smaller_degree - 1)].to_vec());
+        new_coefficients.append(&mut larger.coefficients[..(smaller_degree)].to_vec());
 
         new_coefficients.reverse();
 
