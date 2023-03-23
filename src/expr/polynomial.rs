@@ -45,7 +45,7 @@ impl PolyExpr {
         // The degree of the smaller polynomial
         let (smaller, larger) = match self.degree.cmp(&other.degree) {
             std::cmp::Ordering::Less => (self.clone(), other.clone()),
-            std::cmp::Ordering::Equal => (self.clone(), other.clone()),
+            std::cmp::Ordering::Equal => return PolyExpr::new(self.coefficients.iter().zip(other.coefficients).map(|(a, b)| { a + b }).collect()),
             std::cmp::Ordering::Greater => (other.clone(), self.clone()),
         };
 
