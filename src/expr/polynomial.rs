@@ -1,5 +1,5 @@
 use core::prelude;
-use std::fmt;
+use std::{fmt, collections::VecDeque};
 
 use crate::expr::join::JoinType;
 
@@ -8,7 +8,7 @@ use super::{base_func::BaseFunc, join::{Join, JoinFuncError}, Function};
 #[derive(Debug, Clone)]
 pub struct PolyExpr {
     degree: usize,
-    coefficients: Vec<f64>,
+    pub coefficients: Vec<f64>,
 }
 
 
@@ -41,13 +41,30 @@ impl PolyExpr {
         Ok(vec)
     }
 
-    fn combine_terms(&mut self) {
+    pub fn combine_terms(self, other: PolyExpr) -> PolyExpr {
+        // The degree of the smaller polynomial
+        let (smaller, larger) = match self.degree.cmp(&other.degree) {
+            std::cmp::Ordering::Less => (self.clone(), other.clone()),
+            std::cmp::Ordering::Equal => (self.clone(), other.clone()),
+            std::cmp::Ordering::Greater => (other.clone(), self.clone()),
+        };
 
-        // let
+        let smaller_degree = smaller.degree;
+
+        let mut new_coefficients = Vec::new();
 
         // loop and check for like terms. if so add to queue
 
-        // combine like terms and remove old ones
+        for i in (0..=smaller_degree).rev() {
+            new_coefficients.push(smaller.coefficients[smaller_degree + i - 2] + larger.coefficients[i + 1]);
+        }
+
+        // Add the remaining terms of the larger polynomial
+        new_coefficients.append(&mut other.coefficients[..(smaller_degree - 1)].to_vec());
+
+        new_coefficients.reverse();
+
+        PolyExpr::new(new_coefficients)
     }
 }
 
@@ -82,17 +99,17 @@ impl fmt::Display for PolyExpr {
                 continue;
             }
 
-            let sign = match self.coefficients[self.degree - i - 1].signum() {
-                1.0 => {
+            let sign = match (self.coefficients[self.degree - i] as i32).signum() {
+                1 => {
                     String::from("+")
                 },
-                -1.0 => {
+                -1 => {
                     String::from("-")
                 },
                 _ => unreachable!()
             };
 
-            string.push_str(&format!("{}x^{} {}", self.coefficients[self.degree - i].abs(), i, sign))
+            string.push_str(&format!(" {}{}x^{} ", sign, self.coefficients[self.degree - i].abs(), i))
             
         }
 
